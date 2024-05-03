@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="{% static '/manager/css/style.css' %}" />
+</head>
+<body>
+    <div class="container">
+        <div class="taskFormContainer">
+            <h2>Add New Task:</h2>
+            <!-- Форма для створення нового завдання -->
+            <form id="addTaskForm">
+                <input type="text" id="taskTitle" placeholder="Enter task title">
+                <input type="text" id="taskDescription" placeholder="Enter task description">
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+
+        <div id="taskList">
+            <h2>Existing Tasks:</h2>
+            <ul>
+                {% for task in tasks %}
+                <li>
+                    <span>{{ task.title }} - {{ task.description }}</span>
+                    {% if task.completed is not None %}
+                        {% if task.completed %}
+                            <span class="completed">(Completed)</span>
+                        {% else %}
+                            <span class="not-completed">(Not Completed)</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="not-completed">(Not Completed)</span>
+                    {% endif %}
+                    <button class="delete-button" data-task-id="{{ task.id }}">Delete</button>
+                    <button class="update-button" data-task-id="{{ task.id }}">Update</button>
+                    <button class="toggle-completed-button" data-task-id="{{ task.id }}">Toggle Completed</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="{% static '/manager/js/script.js' %}"></script>
+</body>
+</html>
