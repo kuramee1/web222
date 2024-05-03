@@ -1,17 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Get form for creating a new task
     const addTaskForm = document.getElementById('addTaskForm');
 
-    // Event listener for adding a new task
     addTaskForm.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
+        event.preventDefault();
 
-        // Get input values
         const title = document.getElementById('taskTitle').value;
         const description = document.getElementById('taskDescription').value;
-        const completed = false; // Set completed status to false by default
+        const completed = false;
 
-        // Send POST request to create a new task
         fetch('/create-task/', {
             method: 'POST',
             headers: {
@@ -39,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    // Function to delete a task
     function deleteTask(taskId) {
         fetch(`/delete-task/${taskId}/`, {
             method: 'DELETE',
@@ -61,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Function to update a task
     function updateTask(taskId, newDescription) {
         fetch(`/update-task/${taskId}/`, {
             method: 'PUT',
@@ -86,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Function to toggle completed status of a task
 function toggleCompleted(taskId) {
   fetch(`/toggle-completed/${taskId}/`, {
     method: 'PATCH',
@@ -107,11 +100,9 @@ function toggleCompleted(taskId) {
       console.error('Error toggling task completed status:', error);
     });
 
-  // Get the toggle completed button for the task
   const toggleCompletedButton = document.querySelector(`button[data-task-id="${taskId}"][class*="toggle-completed-button"]`);
   console.log('Toggle completed button:', toggleCompletedButton);
 
-  // Toggle the CSS class for the button based on the completed status
   if (toggleCompletedButton) {
     const classes = toggleCompletedButton.classList;
     console.log('Before toggling:', classes);
@@ -121,7 +112,6 @@ function toggleCompleted(taskId) {
   }
 }
 
-    // Function to render tasks
     function renderTasks(tasks) {
         const taskList = document.getElementById('taskList');
         taskList.innerHTML = '';
@@ -130,14 +120,12 @@ function toggleCompleted(taskId) {
             const taskItem = document.createElement('li');
             taskItem.textContent = `${task.title} - ${task.description} ${task.completed ? '(Completed)' : '(Not Completed)'}`;
 
-            // Add delete button
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('delete-button');
             deleteButton.textContent = 'Delete';
             deleteButton.addEventListener('click', () => deleteTask(task.id));
             taskItem.appendChild(deleteButton);
 
-            // Add update button
             const updateButton = document.createElement('button');
             updateButton.classList.add('update-button');
             updateButton.textContent = 'Update';
@@ -149,7 +137,6 @@ function toggleCompleted(taskId) {
             });
             taskItem.appendChild(updateButton);
 
-            // Add toggle completed button
             const toggleCompletedButton = document.createElement('button');
             toggleCompletedButton.classList.add('toggle-completed-button');
             toggleCompletedButton.textContent = 'Toggle Completed';
@@ -160,7 +147,6 @@ function toggleCompleted(taskId) {
         });
     }
 
-    // Function to fetch tasks from the back-end
     function fetchTasks() {
         return fetch('/get-tasks/')
             .then(response => {
@@ -178,7 +164,6 @@ function toggleCompleted(taskId) {
             });
     }
 
-    // Function to get CSRF token
     function getCSRFToken() {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
@@ -190,10 +175,8 @@ function toggleCompleted(taskId) {
         return '';
     }
 
-    // Initialize fetchTasks
     fetchTasks();
 
-    // Add event listener to toggle completed button
     document.addEventListener('DOMContentLoaded', function () {
         const toggleCompletedButtons = document.querySelectorAll('.toggle-completed-button');
         toggleCompletedButtons.forEach(button => {
